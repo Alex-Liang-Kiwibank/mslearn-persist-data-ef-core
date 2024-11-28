@@ -10,13 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSqlite<PizzaContext>("Data Source=ContosoPizza.db");
+builder.Services.AddSqlite<PromotionsContext>("Data Source=Promotions/Promotions.db");
 
 // Add the PizzaContext
 
 // Add the PromotionsContext
 
-builder.Services.AddScoped<PizzaService>();
+// builder.Services.AddScoped<PizzaService>();
 
 var app = builder.Build();
 
@@ -34,6 +34,6 @@ app.MapControllers();
 // Add the CreateDbIfNotExists method call
 
 app.MapGet("/", () => @"Contoso Pizza management API. Navigate to /swagger to open the Swagger test UI.");
-app.CreateDbIfNotExists();
+// app.CreateDbIfNotExists();
 
 app.Run();
