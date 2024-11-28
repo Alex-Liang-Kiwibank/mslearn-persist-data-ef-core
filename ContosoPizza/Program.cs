@@ -1,4 +1,8 @@
+using ContosoPizza.Data;
+using ContosoPizza.Models;
 using ContosoPizza.Services;
+using Microsoft.EntityFrameworkCore;
+
 // Additional using declarations
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSqlite<PizzaContext>("Data Source=ContosoPizza.db");
 
 // Add the PizzaContext
 
