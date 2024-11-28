@@ -10,5 +10,5 @@ public class Sauce
     [MaxLength(50)]
     public string? Name { get; set; }
     
-    public bool isVegan { get; set; }
+    public bool IsVegan { get; set; }
 }

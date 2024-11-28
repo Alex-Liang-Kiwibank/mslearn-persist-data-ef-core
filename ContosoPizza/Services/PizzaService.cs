@@ -1,41 +1,81 @@
+using ContosoPizza.Data;
 using ContosoPizza.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContosoPizza.Services;
 
 public class PizzaService
 {
-    public PizzaService()
+    private readonly PizzaContext _context;
+
+    public PizzaService(PizzaContext context)
     {
-        
+        _context = context;
     }
 
     public IEnumerable<Pizza> GetAll()
     {
-        throw new NotImplementedException();
+        return _context.Pizzas.AsNoTracking().ToList();
     }
 
     public Pizza? GetById(int id)
     {
-        throw new NotImplementedException();
+        return _context.Pizzas.Include(e => e.Toppings)
+            .Include(e => e.Sauce)
+            .Where(e => e.Id == id).AsNoTracking()
+            .SingleOrDefault();
     }
 
     public Pizza? Create(Pizza newPizza)
     {
-        throw new NotImplementedException();
+        _context.Pizzas.Add(newPizza);
+        _context.SaveChanges();
+        return newPizza;
     }
 
     public void AddTopping(int PizzaId, int ToppingId)
     {
-        throw new NotImplementedException();
+        var pizza = GetById(PizzaId);
+        var topping = _context.Toppings.Find(ToppingId);
+
+        if (pizza is null || topping is null)
+        {
+            throw new Exception("Invalid Pizza or Topping");
+        }
+
+        if (pizza.Toppings is null)
+        {
+            pizza.Toppings = new List<Topping>();
+        }
+
+        pizza.Toppings.Add(topping);
+        _context.SaveChanges();
     }
 
     public void UpdateSauce(int PizzaId, int SauceId)
     {
-        throw new NotImplementedException();
+        var pizza = GetById(PizzaId);
+        var sauce = _context.Sauces.Find(SauceId);
+
+        if (pizza is null || sauce is null)
+        {
+            throw new Exception("Invalid Pizza or Sauce");
+        }
+
+        pizza.Sauce = sauce;
+        _context.SaveChanges();
     }
 
     public void DeleteById(int id)
     {
-        throw new NotImplementedException();
+        var pizza = GetById(id);
+
+        if (pizza is null)
+        {
+            throw new Exception("Invalid Pizza");
+        }
+
+        _context.Pizzas.Remove(pizza);
+        _context.SaveChanges();
     }
 }

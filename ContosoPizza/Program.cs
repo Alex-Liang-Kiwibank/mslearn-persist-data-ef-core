@@ -34,5 +34,6 @@ app.MapControllers();
 // Add the CreateDbIfNotExists method call
 
 app.MapGet("/", () => @"Contoso Pizza management API. Navigate to /swagger to open the Swagger test UI.");
+app.CreateDbIfNotExists();
 
 app.Run();
